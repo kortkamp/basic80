@@ -11,6 +11,15 @@
 // Number of commands in Basic.
 #define COMMAND_NUM 20 
 
+
+
+
+int exec_line(char*);
+
+char *get_line(int );
+	
+int get_index(int );
+	
 struct commands{
 	char name[20];
 	void (*function)(char*);
@@ -89,20 +98,28 @@ void clear(){
 void run(){
 	while(exec_ptr < program_ptr){
 
-	//	exec_line(get_line(exec_ptr));
-		exec_ptr++;
+		exec_line(get_line(exec_ptr++));
+		//exec_ptr++;
 	}
-		exec_ptr++;
+		exec_ptr = 0;
 }
 
 void new(){
 	for(int i = 0 ; i < program_ptr; i ++)
 		program_mem[i].line_number = 0;
 	program_ptr = 0;
+	exec_ptr = 0;
 }
 void list(){
 	for(int i = 0 ; i < program_ptr ; i ++)
 		printf("%d %s\n", program_mem[i].line_number,program_mem[i].line);
+}
+void  goto_line(char *line_number_str){
+	int line_number = 0;
+	sscanf(line_number_str,"%d",&line_number);
+	exec_ptr = get_index(line_number) ;
+	
+//	printf("line:%d index:%d\n",line_number,get_index(line_number));
 }
 // Return a position index of a line in program_mem.
 int find_line(int number){
@@ -111,14 +128,15 @@ int find_line(int number){
 	}
 	return(-1);
 }
-// Array of name and pointer to functions.
+// Array with name and pointer to functions.
 struct commands command_list[COMMAND_NUM] = {
 	{"print",&print},
 	{"system", &system_exit},
 	{"list", &list},
 	{"clear",&clear},
 	{"run", &run},
-	{"new", &new}
+	{"new", &new},
+	{"goto",&goto_line}
 	
 };
 
@@ -150,21 +168,27 @@ int drop_line(int index){
 	program_ptr--;
 }
 
-int expand_lines(int line_number){
-	int index = 0;
-	while(program_mem[index].line_number < line_number)index++;
-	for(int i = program_ptr; i > index;  i--){
-		program_mem[i].line_number = program_mem[i-1].line_number;
-		strcpy(program_mem[i].line, program_mem[i-1].line); 
-	}	
-	program_ptr++;
-}
 // Write a line and number in index of program_mem.
 int put_line(int index, int line_number, char *line){
 	program_mem[index].line_number = line_number;
 	strcpy(program_mem[index].line, line);
 }
-
+int expand_lines(int line_number,char *line){
+	int index = get_index(line_number);
+	for(int i = program_ptr; i > index;  i--){
+		program_mem[i].line_number = program_mem[i-1].line_number;
+		strcpy(program_mem[i].line, program_mem[i-1].line); 
+	}
+	put_line(index,line_number,line);
+	program_ptr++;
+}
+int get_index(int line_number){
+	int index = 0;
+	while(program_mem[index].line_number < line_number && index < program_ptr){
+		index++;
+	}
+	return(index);
+}
 char *get_line(int index){
 	return(program_mem[index].line);
 }
@@ -199,10 +223,7 @@ int enter_line(char *line_str){
 
 	// Entered line is between previous line,
 	// make space for new line.
-	expand_lines(line_number);
-	put_line(line_index,line_number,line);
-	//	printf("%d:%s size:%d\n",line_number, line, strlen(line));
-Error Here!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	expand_lines(line_number,line);
 }
 
 
