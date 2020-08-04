@@ -24,7 +24,8 @@ struct program{
 struct program program_mem[MAX_LINES];
 // Pointer to next free line space.
 int program_ptr = 0; 
-
+// Pointer do next line to be executed.
+int exec_ptr = 0;
 
 int icounter = 0; 
 
@@ -86,22 +87,23 @@ void system_exit(){
 void clear(){
 }
 void run(){
+	while(exec_ptr < program_ptr){
+
+	//	exec_line(get_line(exec_ptr));
+		exec_ptr++;
+	}
+		exec_ptr++;
 }
 
+void new(){
+	for(int i = 0 ; i < program_ptr; i ++)
+		program_mem[i].line_number = 0;
+	program_ptr = 0;
+}
 void list(){
 	for(int i = 0 ; i < program_ptr ; i ++)
 		printf("%d %s\n", program_mem[i].line_number,program_mem[i].line);
 }
-// Array of name and pointer to functions.
-struct commands command_list[COMMAND_NUM] = {
-	{"print",&print},
-	{"system", &system_exit},
-	{"list", &list},
-	{"clear",&clear},
-	{"run", &run}
-	
-};
-
 // Return a position index of a line in program_mem.
 int find_line(int number){
 	for(int i = 0 ; i < MAX_LINES; i++){
@@ -109,6 +111,16 @@ int find_line(int number){
 	}
 	return(-1);
 }
+// Array of name and pointer to functions.
+struct commands command_list[COMMAND_NUM] = {
+	{"print",&print},
+	{"system", &system_exit},
+	{"list", &list},
+	{"clear",&clear},
+	{"run", &run},
+	{"new", &new}
+	
+};
 
 // Execute a command.
 int exec_line(char *line){
@@ -128,17 +140,29 @@ int exec_line(char *line){
 int drop_line(int index){
 	// The line dont exists.
 	if(index == -1) return(0);
-	
+
 	//drop code goes here
+	for(int i = index; i < program_ptr; i ++){
+		program_mem[i].line_number = program_mem[i+1].line_number;
+		strcpy(program_mem[i].line, program_mem[i+1].line); 
+	}	
 
 	program_ptr--;
 }
 
+int expand_lines(int line_number){
+	int index = 0;
+	while(program_mem[index].line_number < line_number)index++;
+	for(int i = program_ptr; i > index;  i--){
+		program_mem[i].line_number = program_mem[i-1].line_number;
+		strcpy(program_mem[i].line, program_mem[i-1].line); 
+	}	
+	program_ptr++;
+}
 // Write a line and number in index of program_mem.
 int put_line(int index, int line_number, char *line){
 	program_mem[index].line_number = line_number;
 	strcpy(program_mem[index].line, line);
-	program_ptr++;
 }
 
 char *get_line(int index){
@@ -151,34 +175,37 @@ int enter_line(char *line_str){
 	char line[80];
 	int line_index; // Index in program_mem
 	int line_size;
-	sscanf(line_str," %d %[^\n]\n",&line_number,line);
+	int num_args = sscanf(line_str," %d %[^\n]\n",&line_number,line);
 	line_size = strlen(line);
 	line_index = find_line(line_number);
 	
-	// Empty line.
-	if(line_size == 1){
+	// Empty line string.
+	if(num_args < 2){
 	       	drop_line(line_index); 
 		return(0);
 	}
-
 	// Line exists, substitute!
 	if(line_index != -1) {
 		put_line(line_index,line_number,line);
-		program_ptr--;
 		return(0);
 	}
 	
 	// The entered line is the next in order
 	if(line_number > program_mem[program_ptr -1].line_number){
 		put_line(program_ptr,line_number,line);
+		program_ptr++;
 		return(0);
 	}
+
 	// Entered line is between previous line,
 	// make space for new line.
-	//expand_line();
+	expand_lines(line_number);
+	put_line(line_index,line_number,line);
 	//	printf("%d:%s size:%d\n",line_number, line, strlen(line));
-
+Error Here!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 }
+
+
 int main(){
 
 	// Will store the input commands that do not have line specification.
