@@ -1,6 +1,7 @@
 #ifndef _COMMAND_H
 #define _COMMAND_H
 
+#include <string.h>
 #include "error.h"
 #include "basic.h"
 #include "math.h"
@@ -18,5 +19,6 @@ void run();
 void new();
 void list();
 void clear();
+void ifthen(char*);
 
 #endif

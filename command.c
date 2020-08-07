@@ -10,8 +10,8 @@ struct commands command_list[COMMAND_NUM] = {
 	{"list", &list},
 	{"new", &new},
 	{"run", &run},
-	{"goto",&goto_line}
-	
+	{"goto",&goto_line},
+	{"if", &ifthen}	
 };
 
 void print(char *arg){
@@ -47,5 +47,22 @@ void list(){
 		printf("%d %s\n", program_mem[i].line_number,program_mem[i].line);
 }
 
-
-
+void ifthen(char *arg){
+	int pos = 0;
+	while(strncmp(arg+pos,"then",4) != 0) {
+		pos++;
+		// Found EOF without "then".
+		if(arg[pos] == '\0') {
+			error = SYNTAXERROR;
+			return;
+		}
+	}
+	arg[pos] = '\0';
+	if(evaluate(arg)){
+		// size of '\0' + "then"
+		pos += 5; 
+		//printf("eval: %s, run:(%s)\n",arg, arg + pos);
+		exec_line(arg+pos);
+	}	
+	return;
+}

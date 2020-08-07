@@ -25,15 +25,18 @@ int exec_line(char *line){
 	char arg[50]; // Argument of command.
 	sscanf(line,"%[^ ] %[^\n]s",command,arg);
 	//printf("%s >> %s\n",command, arg); 		
-	if(test_attribution(line)) {
-		exec_attribution(line);
-	}
 	for(int i = 0 ; i < COMMAND_NUM; i ++)
 		if(!strcmp(command,command_list[i].name)){
 		       	(command_list[i].function)(arg);
 			return(0);	
 		}
 	// Command not found.
+	
+	// Test if statement is a attribution "x = 3"
+	if(test_attribution(line)) {
+		exec_attribution(line);
+		return(0);
+	}
 	error = SYNTAXERROR;
 	return(-1);
 }
