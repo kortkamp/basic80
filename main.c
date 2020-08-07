@@ -9,7 +9,7 @@
 #include "command.h"
 #include "var.h"
 
-int icounter = 0; 
+//int icounter = 0; 
 
 
 int main(){
@@ -24,7 +24,6 @@ int main(){
 	printf("OK\n");
 
 	while(1){
-		error = 0;
 		error = 0;
 		
 		// Read input from user.

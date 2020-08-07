@@ -73,14 +73,18 @@ long  eval(char *arg, int tier){
 	if(tier == 4){
 		//for(int i = 0 ; i < tier; i++) printf("	"); 
 		
+		//printf("tier: %d expression: (%s) \n",tier,arg); 
 		// Is number.
 		if(arg[0] >= '0' && arg[0] <= '9' )
 			sscanf(arg,"%ld",&value);
-		else{
+		else if(arg[0] >= 'a' && arg[0] <= 'z')  {
 			// Is function ???
 			// code code code
 			
 			value = get_var(arg);
+		}else {
+			printf("arg[0] = '%c' ,  value:%d\n",arg[0],arg[0]);
+			error = MATHERROR;
 		}
 	}else {
 		// If we got a expression inside brackets
@@ -89,7 +93,7 @@ long  eval(char *arg, int tier){
 			tier = 0;
 			// Remove '('
 			arg[0] = ' ';
-			if(arg[strlen(arg) - 1 ] != ')') error = MATHERROR;
+			//if(arg[strlen(arg) - 1 ] != ')') error = SYNTAXERROR;
 			// Remove ')'
 			arg[strlen(arg) - 1 ] = '\0';
 		}
@@ -100,6 +104,7 @@ long  eval(char *arg, int tier){
 				//arg_pos++;
 			}
 			if(arg[arg_pos] == ')'){
+				if(!inside_bracket) error = SYNTAXERROR;
 			       	inside_bracket =  FALSE;
 				//arg_pos++;
 			}
@@ -122,6 +127,8 @@ long  eval(char *arg, int tier){
 			}
 
 		};
+		// Terminou a string sem fechar o bracket
+		if(inside_bracket) error = SYNTAXERROR;
 	}
 	//for(int i = 0 ; i < tier; i++) printf("	"); 	
 	//printf(":::value:%ld\n",value);
