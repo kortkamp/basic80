@@ -42,7 +42,8 @@ long operate(long op1, long op2, char op){
 			return(0);
 
 	}
-
+	error = MATHERROR;
+	return(-1);
 }
 
 // Evaluate Math.

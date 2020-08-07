@@ -3,7 +3,7 @@
 
 	#define DIVBYZERO 1
 	#define MATHERROR 2
-
+	#define SYNTAXERROR 3
 	// Global error var.
 	int error;	
 
