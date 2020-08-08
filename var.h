@@ -10,9 +10,9 @@
 long var[26][26];
 void clear_vars();
 long get_var(char*);
-int set_var(char*,long);
+long *set_var(char*,long);
 int test_attribution(char*);
-int exec_attribution(char*);
+long *exec_attribution(char*);
 
 
 #endif

@@ -9,9 +9,8 @@
 #include "command.h"
 #include "var.h"
 
-//int icounter = 0; 
 
-
+//TODO load a file .bas
 int main(){
 	exec_ptr = 0;
 	program_ptr = 0; 
@@ -37,6 +36,7 @@ int main(){
 			exec_line(cbuffer);
 			if(error != 0)
 				printf("? %s\n",error_msg[error]);
+			//printf("\n");
 			printf("Ok\n");
 		}
 

@@ -1,7 +1,8 @@
 #include "var.h"
 
 
-
+//TODO adicionar variáveis string
+//TODO trabalhar com floats
 
 // Return the value of a numeric var.
 long get_var(char *name){
@@ -11,14 +12,15 @@ long get_var(char *name){
 	return(var[name[0]-'a'][name[1]-'a']);
 }
 // Set a value for a var;
-int set_var(char *name, long value){
+long *set_var(char *name, long value){
 	//	printf("set_var:%s << %ld",name,value);
 	if(name[1] == '\0'){
 		var[name[0]-'a'][0] = value;
-		return(0);
+		return(&var[name[0]-'a'][0]);
 	}
 	var[name[0] - 'a'][name[1]-'a'] = value;
-	return(0);
+	printf("set_var:%ld\n",&var[name[0] - 'a'][name[1]-'a'] );
+	return(&var[name[0] - 'a'][name[1]-'a']);
 }
 void clear_vars(){
 	for(int i = 0 ; i < 26 ; i++)
@@ -36,14 +38,15 @@ int test_attribution(char *buffer){
 	return(FALSE);
 
 }
-int exec_attribution(char *buffer){
+long *exec_attribution(char *buffer){
 	char var_name[20];
 	int size; // size of string read
 	sscanf(buffer," %[^=] =%n",var_name,&size);
 	if(var_name[1] == ' ') var_name[1] = '\0'; 
-//i	printf("new var (%s)= %d, left:(%s),%ld\n",var_name,size,buffer+size,evaluate(buffer+size));
-	set_var(var_name,evaluate(buffer+size));
+//	printf("new var (%s)= %d, left:(%s),%ld\n",var_name,size,buffer+size,evaluate(buffer+size));
+	
+//	printf("%ld",set_var(var_name,evaluate(buffer+size)));
+	return(set_var(var_name,evaluate(buffer+size)));
 
-	return(1);
 }
 
