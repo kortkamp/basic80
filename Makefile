@@ -2,8 +2,8 @@
  
 all: basic
  
- basic: main.o math.o program.o command.o var.o
-	gcc -lm -o basic main.o math.o program.o command.o var.o
+ basic: main.o math.o program.o command.o var.o error.o
+	gcc -lm -o basic main.o math.o program.o command.o var.o error.o
  
 main.o: main.c
 	gcc -o main.o main.c -lm -c -W -Wall -pedantic
@@ -22,6 +22,9 @@ var.o: var.c var.h
 
 run:	all
 	./basic
+
+error.o: error.c error.h
+	gcc -o error.o error.c -lm -c -W -Wall -pedantic
 
 clean:
 	rm -rf *.o *~ basic

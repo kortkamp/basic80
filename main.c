@@ -36,7 +36,7 @@ int main(){
 			// Direct mode.
 			exec_line(cbuffer);
 			if(error != 0)
-				printf("? Error %d\n",error);
+				printf("? %s\n",error_msg[error]);
 			printf("Ok\n");
 		}
 

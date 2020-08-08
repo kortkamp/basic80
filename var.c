@@ -30,10 +30,10 @@ int test_attribution(char *buffer){
 	int counter = 0;
 	while(buffer[counter] != 0){
 		if(buffer[counter] == '=')
-			return(1);
+			return(TRUE);
 		counter++;
 	}
-	return(0);
+	return(FALSE);
 
 }
 int exec_attribution(char *buffer){

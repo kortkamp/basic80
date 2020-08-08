@@ -20,5 +20,7 @@ void new();
 void list();
 void clear();
 void ifthen(char*);
+void for_next(char*);
+void next();
 
 #endif

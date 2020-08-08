@@ -1,6 +1,7 @@
 #ifndef _VAR_H
 #define _VAR_H
 
+#include "basic.h"
 #include "error.h"
 #include "math.h"
 #include <stdio.h>

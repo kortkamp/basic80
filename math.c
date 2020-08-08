@@ -5,7 +5,7 @@
 #include <string.h>
 
 long operate(long op1, long op2, char op){
-	//printf("operate: %ld %c %ld \n",op1, op ,op2);
+//	printf("operate: %ld %c %ld \n",op1, op ,op2);
 	switch(op){
 		case ':':
 			return(op2);
@@ -104,7 +104,7 @@ long  eval(char *arg, int tier){
 				//arg_pos++;
 			}
 			if(arg[arg_pos] == ')'){
-				if(!inside_bracket) error = SYNTAXERROR;
+				if(!inside_bracket) error = MATHERROR;
 			       	inside_bracket =  FALSE;
 				//arg_pos++;
 			}
@@ -128,7 +128,7 @@ long  eval(char *arg, int tier){
 
 		};
 		// Terminou a string sem fechar o bracket
-		if(inside_bracket) error = SYNTAXERROR;
+		if(inside_bracket) error = MATHERROR;
 	}
 	//for(int i = 0 ; i < tier; i++) printf("	"); 	
 	//printf(":::value:%ld\n",value);
