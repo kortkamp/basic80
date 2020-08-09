@@ -51,7 +51,6 @@ long operate(long op1, long op2, char op){
 	error = MATHERROR;
 	return(-1);
 }
-
 // Evaluate Math.
 // tier is the priority of the step in evaluation 0 is the lowest
 long  eval(char *arg, int tier){
@@ -80,6 +79,19 @@ long  eval(char *arg, int tier){
 		//for(int i = 0 ; i < tier; i++) printf("	"); 
 		
 		//printf("tier: %d expression: (%s) \n",tier,arg); 
+		
+		// If we got a expression inside brackets
+		if(arg[0] == '('){
+			// Restart tier to 0
+			tier = 0;
+			// Remove '('
+			arg[0] = ' ';
+			//if(arg[strlen(arg) - 1 ] != ')') error = SYNTAXERROR;
+			// Remove ')'
+			arg[strlen(arg) - 1 ] = '\0';
+			return(eval(arg,0));
+		}
+
 		// Is number.
 		if((arg[0] >= '0' && arg[0] <= '9')|| arg[0] == '-' )
 			sscanf(arg,"%ld",&value);
@@ -93,25 +105,15 @@ long  eval(char *arg, int tier){
 			error = MATHERROR;
 		}
 	}else {
-		// If we got a expression inside brackets
-		if(arg[0] == '('){
-			// Restart tier to 0
-			tier = 0;
-			// Remove '('
-			arg[0] = ' ';
-			//if(arg[strlen(arg) - 1 ] != ')') error = SYNTAXERROR;
-			// Remove ')'
-			arg[strlen(arg) - 1 ] = '\0';
-		}
-		while(arg[arg_pos] != '\0'){
+			while(arg[arg_pos] != '\0'){
 
 			if(arg[arg_pos] == '(') {
-				inside_bracket = TRUE;
+				inside_bracket ++;
 				//arg_pos++;
 			}
 			if(arg[arg_pos] == ')'){
-				if(!inside_bracket) error = MATHERROR;
-			       	inside_bracket =  FALSE;
+				if(inside_bracket < 1) error = MATHERROR;
+			       	inside_bracket --;
 				//arg_pos++;
 			}
 			// Discard spaces.	
@@ -134,7 +136,7 @@ long  eval(char *arg, int tier){
 
 		};
 		// Terminou a string sem fechar o bracket
-		if(inside_bracket) error = MATHERROR;
+		if(inside_bracket != 0) error = MATHERROR;
 	}
 	//for(int i = 0 ; i < tier; i++) printf("	"); 	
 	//printf(":::value:%ld\n",value);
