@@ -43,12 +43,7 @@ void clear(){
 void run(){
 	exec_ptr = 0;
 	clear_vars();
-	set_break = FALSE;
-	while(exec_ptr < program_ptr && error == 0 && !set_break){
-		exec_line(get_line(exec_ptr++));
-		//printf("\n");
-		//exec_ptr++;
-	}
+	cont();
 }
 // Resumes execution of a program.
 void cont(){
@@ -67,7 +62,6 @@ void new(){
 	program_ptr = 0;
 	exec_ptr = 0;
 }
-//TODO especificar a linha que queremos listar
 void list(char *arg){
 	int start = 0;
 	sscanf(arg,"%d",&start);
@@ -168,7 +162,7 @@ void for_next(char *arg){
 	return;
 
 }
-// TODO add tratamento de var
+// TODO add tratamento de var para retornar para o for correto
 void next(char *arg){
 	//printf("next\n");
 	set_break = TRUE;

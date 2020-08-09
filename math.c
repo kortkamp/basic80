@@ -4,6 +4,9 @@
 #include "basic.h"
 #include <string.h>
 
+
+//TODO add math function 
+//TODO add >= <= <> in operate
 long operate(long op1, long op2, char op){
 //	printf("operate: %ld %c %ld \n",op1, op ,op2);
 	switch(op){
@@ -18,6 +21,9 @@ long operate(long op1, long op2, char op){
 
 		case '*':
 			return(op1*op2);
+
+		case '%':
+			return(op1%op2);
 
 		case '/':
 			if(op2 == 0){
@@ -54,7 +60,7 @@ long  eval(char *arg, int tier){
 		"=><",	// tier 0 operators
 		"+-",	// tier 1 operators
 		"*/",	// tier 2 operators
-		"^"	// tier 3 operators
+		"^%"	// tier 3 operators
 			// tier 4 numbers, vars , functions
 	};
 
@@ -75,7 +81,7 @@ long  eval(char *arg, int tier){
 		
 		//printf("tier: %d expression: (%s) \n",tier,arg); 
 		// Is number.
-		if(arg[0] >= '0' && arg[0] <= '9' )
+		if((arg[0] >= '0' && arg[0] <= '9')|| arg[0] == '-' )
 			sscanf(arg,"%ld",&value);
 		else if(arg[0] >= 'a' && arg[0] <= 'z')  {
 			// Is function ???
