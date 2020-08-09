@@ -143,7 +143,7 @@ void for_next(char *arg){
 	if(step == 0) step = evaluate(arg+pos_step);
 //	printf("var:%ld ::limit(%d):%s=%ld  step(%d):%s=%ld\n",*var,pos_to,arg+pos_to,limit,pos_step,arg + pos_step,step);
 	if(var > limit && step < 0 ) direction = -1;
-	while((*var)*direction <= limit){
+	while((*var)*direction <= limit*direction){
 		//printf("exec_ptr:%d\n",exec_ptr);
 		//run();
 		cont();
