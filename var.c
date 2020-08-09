@@ -3,6 +3,8 @@
 
 //TODO adicionar variáveis string
 //TODO trabalhar com floats
+//TODO add Missing Operand error
+
 
 // Return the value of a numeric var.
 long get_var(char *name){
@@ -20,6 +22,14 @@ long *set_var(char *name, long value){
 	}
 	var[name[0] - 'a'][name[1]-'a'] = value;
 	printf("set_var:%ld\n",&var[name[0] - 'a'][name[1]-'a'] );
+	return(&var[name[0] - 'a'][name[1]-'a']);
+}
+long *get_var_pointer(char *name){
+//	printf("name(%s)%d\n",name,name[0]);
+	if(name[1] == '\0'){
+		return(&var[name[0]-'a'][0]);
+	}
+	if(name[0] == '\0') return(NULL);
 	return(&var[name[0] - 'a'][name[1]-'a']);
 }
 void clear_vars(){

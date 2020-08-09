@@ -16,6 +16,7 @@ struct commands command_list[COMMAND_NUM];
 void print(char*);
 void system_exit();
 void run();
+void cont();
 void new();
 void list();
 void clear();

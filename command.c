@@ -7,6 +7,10 @@
 
 int set_break;
 
+// Pointer to var passed to next.
+// If not passed var, return NULL
+long *next_var;
+
 // Array with name and pointer to functions.
 struct commands command_list[COMMAND_NUM] = {
 	{"print",&print},
@@ -53,6 +57,7 @@ void cont(){
 		//printf("\n");
 		//exec_ptr++;
 	}
+	if(error != 0) error_line = program_mem[exec_ptr - 1].line_number;
 }
 
 void new(){
@@ -88,6 +93,22 @@ void ifthen(char *arg){
 	}	
 	return;
 }
+
+
+
+// Returns the index pointer of the next "next" statement,
+// if not found return 0;
+int find_next_stm(){
+	while(!strncmp("next",program_mem[exec_ptr].line,4 )){
+		exec_ptr++;
+		if(exec_ptr>=program_ptr) return(0);
+	}
+	//printf("found a next stm\n");
+	return(exec_ptr);
+}
+
+
+
 // TODO substituir rotinas de busca por sscanf
 // TODO fazer funcionar backwards
 void for_next(char *arg){
@@ -98,7 +119,6 @@ void for_next(char *arg){
 	int pos_to = 0;
 	int pos_step = 0;
 	int after_for_ptr = exec_ptr  ;
-	int after_next_ptr;
 	// direction 1 aftewards
 	// direction -1 backwards
 	int direction = 1; 
@@ -114,6 +134,7 @@ void for_next(char *arg){
 	arg[pos_to] = '\0';
 	if(test_attribution(arg)){
 		var = exec_attribution(arg);
+		//printf("var *%ld\n",var);
 		// size of '\0' + "to "
 		pos_to += 3; 
 		//printf("eval: %s, run:(%s)\n",arg, arg + pos);
@@ -142,29 +163,55 @@ void for_next(char *arg){
 	pos_step += 5;
 	if(step == 0) step = evaluate(arg+pos_step);
 //	printf("var:%ld ::limit(%d):%s=%ld  step(%d):%s=%ld\n",*var,pos_to,arg+pos_to,limit,pos_step,arg + pos_step,step);
-	if(var > limit && step < 0 ) direction = -1;
+
+	if(*var > limit && step < 0 ) direction = -1;
 	while((*var)*direction <= limit*direction){
 		//printf("exec_ptr:%d\n",exec_ptr);
-		//run();
-		cont();
-		
-		if(set_break == FALSE) {
-			// Came back here without finding a next
-			// actualy found the end os instructions
-			return;
-		}
-		after_next_ptr = exec_ptr;
+		// must be set to 1 bcuz in last while it could be set to 0; 	
+		next_var = (long *)1;
+		error = 0;
+		// Points the execution pointer to instruction 
+		// right behind the for statement
 		exec_ptr = after_for_ptr;
+		// call the continue untill a error or end of program ocurrs
+		cont();
+		// The cont stops if:
+		// 1 next found
+		// 2 end of program found
+		// 3 error found
+		if(error == NEXTERROR && (next_var == var || next_var == NULL)){
+			//continue
+		}else{
+			error = 0;
+			return;
+		}	
 
 		*var += step;
 	}
-	exec_ptr = after_next_ptr;
-	set_break = FALSE;
+	// Need clear error cuz 'while' stoped in a NEXTERROR error.
+	error = 0;
+	// While not end of program	
+	while(exec_ptr < program_ptr)	{
+		// Exec the next "next" statement to get and test next_var.
+		exec_line(get_line(find_next_stm()));
+		//printf("next 'next' ptr:%d\n",exec_ptr);	
+		// If the correct next was found we must set 
+		// exec_ptr to right after the "next" statement
+		exec_ptr++;
+		if(next_var == var || next_var == 0) return;	
+	}
+	// We didnt found a "next" statement
+	// the exec_ptr was set to end of program_mem
+	// and the execution will finish
 	return;
 
 }
 // TODO add tratamento de var para retornar para o for correto
 void next(char *arg){
 	//printf("next\n");
-	set_break = TRUE;
+	error = NEXTERROR;
+	// Puts in the next_var the pointer to var passed to this "next" statement
+	next_var = get_var_pointer(arg);
+//	printf("var(%s) *%ld\n",arg,next_var);
+	//set_break = TRUE;
 }

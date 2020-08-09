@@ -13,6 +13,6 @@ long get_var(char*);
 long *set_var(char*,long);
 int test_attribution(char*);
 long *exec_attribution(char*);
-
+long *get_var_pointer(char*);
 
 #endif

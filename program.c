@@ -22,7 +22,7 @@ int find_line(int number){
 // Execute a command.
 int exec_line(char *line){
 	char command[10];
-	char arg[50]; // Argument of command.
+	char arg[50] = {0}; // Argument of command.
 	sscanf(line,"%[^ ] %[^\n]s",command,arg);
 	//printf("%s >> %s\n",command, arg); 		
 	for(int i = 0 ; i < COMMAND_NUM; i ++)
