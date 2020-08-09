@@ -155,6 +155,7 @@ void for_next(char *arg){
 		}
 		after_next_ptr = exec_ptr;
 		exec_ptr = after_for_ptr;
+
 		*var += step;
 	}
 	exec_ptr = after_next_ptr;
