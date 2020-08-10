@@ -19,8 +19,8 @@ int find_line(int number){
 	}
 	return(-1);
 }
-// Execute a command.
-int exec_line(char *line){
+// Execute a simgle command.
+int exec_single(char *line){
 	char command[10];
 	char arg[50] = {0}; // Argument of command.
 	sscanf(line,"%[^ ] %[^\n]s",command,arg);
@@ -40,6 +40,27 @@ int exec_line(char *line){
 	error = SYNTAXERROR;
 	return(-1);
 }
+// Exec multiples commands in a line.
+int exec_line(char *line){
+	int line_pos = 0;
+	int buff_pos = 0;
+	char buffer[80];	
+	while( line[line_pos] != 0){
+		buffer[buff_pos++] = line[line_pos++];
+		if(line[line_pos] == ':' || line[line_pos] == '\0'){
+			buffer[buff_pos] = '\0';
+			exec_single(buffer);
+			if(line[line_pos] == '\0') return(0);
+			// Restart a new buffer.
+			buff_pos = 0;
+			line_pos++;
+			// Dicard spaces in start of a new command.
+			while(line[line_pos] == ' ') line_pos++;
+		}
+	}
+	return(0);
+}
+
 
 int drop_line(int index){
 	// The line dont exists.

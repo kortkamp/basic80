@@ -23,5 +23,8 @@ void clear();
 void ifthen(char*);
 void for_next(char*);
 void next();
+void rem();
+void let(char*);
+void input(char*);
 
 #endif

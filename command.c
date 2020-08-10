@@ -2,6 +2,7 @@
 
 #include "command.h"
 #include "program.h"
+#include "file.h"
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -14,6 +15,7 @@ long *next_var;
 // Array with name and pointer to functions.
 struct commands command_list[COMMAND_NUM] = {
 	{"print",&print},
+	{"?",&print},
 	{"system", &system_exit},
 	{"cls",&clear},
 	{"list", &list},
@@ -22,21 +24,89 @@ struct commands command_list[COMMAND_NUM] = {
 	{"goto",&goto_line},
 	{"if", &ifthen},
 	{"for", &for_next},
-	{"next",&next}
+	{"next",&next},
+	{"rem",&rem},
+	{"let",&let},
+	{"input",&input},
+	{"end",&system_exit},
+	{"load",&load}
 };
 
 
 //TODO add printing in the same line with ';'
+//TODO add printing many args
 void print(char *arg){
+	
+	int arg_pos = 0;
+	int buff_pos = 0;
+	char buff[255]; 
+	long value;
 
-	//printf("print(%s)\n",arg);
-	long value = evaluate(arg);
+	while(arg[arg_pos] != '\0' ){
+		switch(arg[arg_pos]){
+			case '"':
+				// Discard " by adding 1 to arg_pos
+				arg_pos++;
+				if(buff_pos > 0){
+					// we have a expression before start 
+					// of a string, so print evaluation of
+					// the expression
+					buff[buff_pos] = '\0';
+					value = evaluate(buff);
+					printf(" %ld ",value);
+					buff_pos = 0;
+				}
+				// If inside " , then print text
+				while(arg[arg_pos] != '"' && arg[arg_pos] != '\0'){
 
-//	if(!strchr(arg,';'))
-//		printf("\n");
-	if(error == 0)
-		printf(" %ld\n", value);
+					printf("%c",arg[arg_pos++]);
+				}
+				arg_pos++;
+			break;
+
+			case ';':
+				// Discand ';'.
+				arg_pos++;
+			break;
+
+			case ' ':
+				// Dicard spaces.
+				arg_pos++;
+			break;
+
+			default:
+				buff[buff_pos++] = arg[arg_pos++];	
+
+			break;	
+		}
+	}
+			
+	if(buff_pos > 0){
+		// we have a expression before start 
+		// of a string, so print evaluation of
+		// the expression
+		buff[buff_pos] = '\0';
+		value = evaluate(buff);
+		printf(" %ld",value);
+		buff_pos = 0;
+	}
+	printf("\n");
+	return;
 }
+
+void rem(){
+	// Do nothing.
+}
+void let(char *arg){
+	if(test_attribution(arg)) {
+		exec_attribution(arg);
+		return;
+	}
+}
+void input(char *arg){
+
+}
+
 void system_exit(){
 	exit(0);
 }
@@ -74,6 +144,7 @@ void list(char *arg){
 		printf("%d %s\n", program_mem[i].line_number,program_mem[i].line);
 }
 // TODO substituir rotinas de busca por sscanf
+// TODO add else processing
 void ifthen(char *arg){
 	int pos = 0;
 	while(strncmp(arg+pos,"then",4) != 0) {
@@ -110,7 +181,6 @@ int find_next_stm(){
 
 
 // TODO substituir rotinas de busca por sscanf
-// TODO fazer funcionar backwards
 void for_next(char *arg){
 	//char arg[] = "for i = 2 to 14 step 1"; printf("%s\n",arg);
 	long limit;
@@ -162,7 +232,6 @@ void for_next(char *arg){
 	limit  = evaluate(arg+pos_to);
 	pos_step += 5;
 	if(step == 0) step = evaluate(arg+pos_step);
-//	printf("var:%ld ::limit(%d):%s=%ld  step(%d):%s=%ld\n",*var,pos_to,arg+pos_to,limit,pos_step,arg + pos_step,step);
 
 	if(*var > limit && step < 0 ) direction = -1;
 	while((*var)*direction <= limit*direction){

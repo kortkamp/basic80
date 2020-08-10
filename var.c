@@ -21,7 +21,7 @@ long *set_var(char *name, long value){
 		return(&var[name[0]-'a'][0]);
 	}
 	var[name[0] - 'a'][name[1]-'a'] = value;
-	printf("set_var:%ld\n",&var[name[0] - 'a'][name[1]-'a'] );
+	//printf("set_var:%ld\n",&var[name[0] - 'a'][name[1]-'a'] );
 	return(&var[name[0] - 'a'][name[1]-'a']);
 }
 long *get_var_pointer(char *name){
@@ -48,6 +48,8 @@ int test_attribution(char *buffer){
 	return(FALSE);
 
 }
+
+//TODO set Missing operand error 
 long *exec_attribution(char *buffer){
 	char var_name[20];
 	int size; // size of string read

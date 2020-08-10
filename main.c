@@ -11,7 +11,7 @@
 
 
 //TODO load a file .bas
-int main(){
+int main(int argc, char *argv[]){
 	exec_ptr = 0;
 	program_ptr = 0; 
 	clear_vars();
@@ -21,7 +21,9 @@ int main(){
 	printf("Basic80 Interpreter\n");
 	printf("%d bytes free\n", MEM_SIZE);
 	printf("OK\n");
-
+	if(argc > 1) load(argv[1]);
+	if(error == FILEERROR)
+		printf("%s\n",error_msg[FILEERROR]);
 	while(1){
 		error = 0;
 		
