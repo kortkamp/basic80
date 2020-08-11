@@ -17,6 +17,7 @@ void print(char*);
 void system_exit();
 void run();
 void cont();
+void line(char*);
 void new();
 void list();
 void clear();

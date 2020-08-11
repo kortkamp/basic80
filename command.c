@@ -29,7 +29,9 @@ struct commands command_list[COMMAND_NUM] = {
 	{"LET",&let},
 	{"INPUT",&input},
 	{"END",&system_exit},
-	{"LOAD",&load}
+	{"LOAD",&load},
+	{"LINE",&line}
+	
 };
 
 
@@ -90,7 +92,7 @@ void print(char *arg){
 		printf(" %ld",value);
 		buff_pos = 0;
 	}
-	printf("\n");
+	if(arg[strlen(arg)-1] != ';') printf("\n");
 	return;
 }
 
@@ -123,12 +125,20 @@ void run(){
 void cont(){
 	set_break = FALSE;
 	while(exec_ptr < program_ptr && error == 0 && !set_break){
-		printf("%d\n",program_mem[exec_ptr].line_number);
+		//printf("%d\n",program_mem[exec_ptr].line_number);
 		exec_line(get_line(exec_ptr++));
 		//printf("\n");
 		//exec_ptr++;
 	}
 	if(error != 0) error_line = program_mem[exec_ptr - 1].line_number;
+}
+
+void line(char *arg){
+	int line_number;
+	sscanf(arg,"%d",&line_number);
+	exec_line(get_line(get_index(line_number)));
+	return;
+
 }
 
 void new(){
@@ -252,10 +262,11 @@ void for_next(char *arg){
 		if(error == NEXTERROR && (next_var == var || next_var == NULL)){
 			//continue
 		}else{
-			error = 0;
+			
+			if(error == NEXTERROR) error = 0;
 			return;
 		}	
-
+		
 		*var += step;
 	}
 	// Need clear error cuz 'while' stoped in a NEXTERROR error.
@@ -268,7 +279,10 @@ void for_next(char *arg){
 		// If the correct next was found we must set 
 		// exec_ptr to right after the "next" statement
 		exec_ptr++;
-		if(next_var == var || next_var == 0) return;	
+		if(next_var == var || next_var == 0) {
+			printf("Ending for %s in line %d\n",arg,program_mem[exec_ptr -1].line_numberu;
+			return;	
+		}
 	}
 	// We didnt found a "next" statement
 	// the exec_ptr was set to end of program_mem

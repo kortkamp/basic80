@@ -10,6 +10,7 @@
 
 // Return the value of a numeric var.
 long get_var(char *name){
+	//printf("name(%s)%d\n",name,name[0]);
 	if(name[1] == '\0')
 		// len of name = 1
 		return(var[name[0]-'A'][0]);
@@ -17,17 +18,17 @@ long get_var(char *name){
 }
 // Set a value for a var;
 long *set_var(char *name, long value){
-	//	printf("set_var:%s << %ld",name,value);
+	//printf("set_var:%s << %ld",name,value);
 	if(name[1] == '\0'){
 		var[name[0]-'A'][0] = value;
 		return(&var[name[0]-'A'][0]);
 	}
-	var[name[0] - 'A'][name[1]-'A'] = value;
+	var[name[0] - 'A'][name[1]-'0'] = value;
 	//printf("set_var:%ld\n",&var[name[0] - 'A'][name[1]-'0'] );
 	return(&var[name[0] - 'A'][name[1]-'0']);
 }
 long *get_var_pointer(char *name){
-//	printf("name(%s)%d\n",name,name[0]);
+	//printf("name(%s)%d\n",name,name[0]);
 	if(name[1] == '\0'){
 		return(&var[name[0]-'A'][0]);
 	}
@@ -57,7 +58,7 @@ long *exec_attribution(char *buffer){
 	int size; // size of string read
 	sscanf(buffer," %[^=] =%n",var_name,&size);
 	if(var_name[1] == ' ') var_name[1] = '\0'; 
-	printf("	new var (%s)= %d, left:'%s',%ld\n",var_name,size,buffer+size,evaluate(buffer+size));
+//	printf("|%s|	new var (%s)= %d, left:'%s',%ld\n",buffer,var_name,size,buffer+size,evaluate(buffer+size));
 	
 //	printf("%ld",set_var(var_name,evaluate(buffer+size)));
 	return(set_var(var_name,evaluate(buffer+size)));

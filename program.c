@@ -21,7 +21,7 @@ int find_line(int number){
 }
 // Execute a simgle command.
 int exec_single(char *line){
-	printf("exec_single:(%s)\n",line);
+	//printf("exec_single:(%s)\n",line);
 	char command[10];
 	char arg[50] = {0}; // Argument of command.
 	sscanf(line,"%[^ ] %[^\n]s",command,arg);
