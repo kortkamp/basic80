@@ -181,11 +181,12 @@ void ifthen(char *arg){
 // Returns the index pointer of the next "next" statement,
 // if not found return 0;
 int find_next_stm(){
-	while(!strncmp("NEXT",program_mem[exec_ptr].line,4 )){
+	while(strncmp("NEXT",program_mem[exec_ptr].line,4 )){
+		//printf("test next stm %d\n", exec_ptr);
 		exec_ptr++;
 		if(exec_ptr>=program_ptr) return(0);
 	}
-	//printf("found a next stm\n");
+	//printf("found a next stm in mem ptr %d\n",exec_ptr);
 	return(exec_ptr);
 }
 
@@ -250,25 +251,30 @@ void for_next(char *arg){
 		// must be set to 1 bcuz in last while it could be set to 0; 	
 		next_var = (long *)1;
 		error = 0;
-		// Points the execution pointer to instruction 
-		// right behind the for statement
-		exec_ptr = after_for_ptr;
 		// call the continue untill a error or end of program ocurrs
 		cont();
 		// The cont stops if:
-		// 1 next found
+		// 1 found a "NEXT" statement
 		// 2 end of program found
 		// 3 error found
 		if(error == NEXTERROR && (next_var == var || next_var == NULL)){
-			//continue
-		}else{
 			
-			if(error == NEXTERROR) error = 0;
-			return;
-		}	
+			//printf("next_var *%ld\n",next_var);
+			// Got a return from a valid "NEXT" statement
+			*var += step;
+			// Points the execution pointer to instruction 
+			// right behind the for statement
+			exec_ptr = after_for_ptr;
+			
+			//continue
+		}
+			//erro aqui, se encontrar um outro next 
+			//no meio do caminho a  função termina.	
+		if(error != 0 && error != NEXTERROR) return;
 		
-		*var += step;
+		error = 0;	
 	}
+	printf("****fim do laço do for\n");
 	// Need clear error cuz 'while' stoped in a NEXTERROR error.
 	error = 0;
 	// While not end of program	
@@ -280,7 +286,8 @@ void for_next(char *arg){
 		// exec_ptr to right after the "next" statement
 		exec_ptr++;
 		if(next_var == var || next_var == 0) {
-			printf("Ending for %s in line %d\n",arg,program_mem[exec_ptr -1].line_numberu;
+			printf("Ending for %s in line %d\n",arg,program_mem[exec_ptr].line_number);
+			error = 0;
 			return;	
 		}
 	}
@@ -292,10 +299,10 @@ void for_next(char *arg){
 }
 // TODO add tratamento de var para retornar para o for correto
 void next(char *arg){
-	//printf("next\n");
+	//printf("next(%s)\n %d %d",arg,arg[0],arg[1]);
 	error = NEXTERROR;
 	// Puts in the next_var the pointer to var passed to this "next" statement
 	next_var = get_var_pointer(arg);
-//	printf("var(%s) *%ld\n",arg,next_var);
+	//printf("var(%s) *%ld\n",arg,next_var);
 	//set_break = TRUE;
 }

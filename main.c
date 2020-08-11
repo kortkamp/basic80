@@ -22,7 +22,6 @@ int main(int argc, char *argv[]){
 	printf("%d bytes free\n", MEM_SIZE);
 	printf("OK\n");
 	
-	load("TEST2.TXT");
 	if(argc > 1) load(argv[1]);
 	if(error == FILEERROR)
 		printf("%s\n",error_msg[FILEERROR]);

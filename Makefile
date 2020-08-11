@@ -23,6 +23,9 @@ var.o: var.c var.h
 run:	all
 	./basic
 
+test:	all
+	./basic TEST.BAS
+
 error.o: error.c error.h
 	gcc -o error.o error.c -lm -c -W -Wall -pedantic
 

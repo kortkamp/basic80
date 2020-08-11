@@ -29,10 +29,11 @@ long *set_var(char *name, long value){
 }
 long *get_var_pointer(char *name){
 	//printf("name(%s)%d\n",name,name[0]);
+	if(name[0] == '\0') 
+		return(NULL);
 	if(name[1] == '\0'){
 		return(&var[name[0]-'A'][0]);
 	}
-	if(name[0] == '\0') return(NULL);
 	return(&var[name[0] - 'A'][name[1]-'0']);
 }
 void clear_vars(){
