@@ -21,6 +21,7 @@ int find_line(int number){
 }
 // Execute a simgle command.
 int exec_single(char *line){
+	printf("exec_single:(%s)\n",line);
 	char command[10];
 	char arg[50] = {0}; // Argument of command.
 	sscanf(line,"%[^ ] %[^\n]s",command,arg);
@@ -44,13 +45,16 @@ int exec_single(char *line){
 int exec_line(char *line){
 	int line_pos = 0;
 	int buff_pos = 0;
-	char buffer[80];	
+	char buffer[255];	
 	while( line[line_pos] != 0){
 		buffer[buff_pos++] = line[line_pos++];
-		if(line[line_pos] == ':' || line[line_pos] == '\0'){
+		if(line[line_pos] == ':' || line[line_pos] == '\0'|| line[line_pos] == 13){
 			buffer[buff_pos] = '\0';
+			//for(int i = 0 ; i < 10;i++) printf("%d ",buffer[i]);printf("\n");
 			exec_single(buffer);
-			if(line[line_pos] == '\0') return(0);
+			if(line[line_pos] == '\0'){
+				return(0);
+			}
 			// Restart a new buffer.
 			buff_pos = 0;
 			line_pos++;

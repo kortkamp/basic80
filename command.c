@@ -14,22 +14,22 @@ long *next_var;
 
 // Array with name and pointer to functions.
 struct commands command_list[COMMAND_NUM] = {
-	{"print",&print},
+	{"PRINT",&print},
 	{"?",&print},
-	{"system", &system_exit},
-	{"cls",&clear},
-	{"list", &list},
-	{"new", &new},
-	{"run", &run},
-	{"goto",&goto_line},
-	{"if", &ifthen},
-	{"for", &for_next},
-	{"next",&next},
-	{"rem",&rem},
-	{"let",&let},
-	{"input",&input},
-	{"end",&system_exit},
-	{"load",&load}
+	{"SYSTEM", &system_exit},
+	{"CLS",&clear},
+	{"LIST", &list},
+	{"NEW", &new},
+	{"RUN", &run},
+	{"GOTO",&goto_line},
+	{"IF", &ifthen},
+	{"FOR", &for_next},
+	{"NEXT",&next},
+	{"REM",&rem},
+	{"LET",&let},
+	{"INPUT",&input},
+	{"END",&system_exit},
+	{"LOAD",&load}
 };
 
 
@@ -123,6 +123,7 @@ void run(){
 void cont(){
 	set_break = FALSE;
 	while(exec_ptr < program_ptr && error == 0 && !set_break){
+		printf("%d\n",program_mem[exec_ptr].line_number);
 		exec_line(get_line(exec_ptr++));
 		//printf("\n");
 		//exec_ptr++;
@@ -147,9 +148,9 @@ void list(char *arg){
 // TODO add else processing
 void ifthen(char *arg){
 	int pos = 0;
-	while(strncmp(arg+pos,"then",4) != 0) {
+	while(strncmp(arg+pos,"THEN",4) != 0) {
 		pos++;
-		// Found EOF without "then".
+		// Found EOF without "THEN".
 		if(arg[pos] == '\0') {
 			error = SYNTAXERROR;
 			return;
@@ -170,7 +171,7 @@ void ifthen(char *arg){
 // Returns the index pointer of the next "next" statement,
 // if not found return 0;
 int find_next_stm(){
-	while(!strncmp("next",program_mem[exec_ptr].line,4 )){
+	while(!strncmp("NEXT",program_mem[exec_ptr].line,4 )){
 		exec_ptr++;
 		if(exec_ptr>=program_ptr) return(0);
 	}
@@ -192,9 +193,9 @@ void for_next(char *arg){
 	// direction 1 aftewards
 	// direction -1 backwards
 	int direction = 1; 
-	while(strncmp(arg+pos_to,"to ",3) != 0) {
+	while(strncmp(arg+pos_to,"TO ",3) != 0) {
 		pos_to++;
-		// Found EOF without "to".
+		// Found EOF without "TO".
 		if(arg[pos_to] == '\0') {
 			error = SYNTAXERROR;
 			//printf("to erro\n");
@@ -216,8 +217,8 @@ void for_next(char *arg){
 	}
 
 	pos_step = pos_to;
-	while(strncmp(arg + pos_step,"step ",5) != 0) {
-		// Found EOF without "step".
+	while(strncmp(arg + pos_step,"STEP ",5) != 0) {
+		// Found EOF without "STEP".
 		if(arg[pos_step] == '\0') {
 			//error = SYNTAXERROR;
 			//printf("step erro\n");

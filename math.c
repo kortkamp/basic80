@@ -95,7 +95,7 @@ long  eval(char *arg, int tier){
 		// Is number.
 		if((arg[0] >= '0' && arg[0] <= '9')|| arg[0] == '-' )
 			sscanf(arg,"%ld",&value);
-		else if(arg[0] >= 'a' && arg[0] <= 'z')  {
+		else if(arg[0] >= 'A' && arg[0] <= 'Z')  {
 			// Is function ???
 			// code code code
 			

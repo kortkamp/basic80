@@ -1,5 +1,5 @@
-10 for i = 1 to 10
-20 print i
-30 next i
-40 print 999999999
+10 FOR I = 1 TO 10
+20 PRINT I
+30 NEXT I
+40 PRINT 999999999
 
