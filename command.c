@@ -35,8 +35,6 @@ struct commands command_list[COMMAND_NUM] = {
 };
 
 
-//TODO add printing in the same line with ';'
-//TODO add printing many args
 void print(char *arg){
 	
 	int arg_pos = 0;
@@ -155,24 +153,34 @@ void list(char *arg){
 		printf("%d %s\n", program_mem[i].line_number,program_mem[i].line);
 }
 // TODO substituir rotinas de busca por sscanf
-// TODO add else processing
 void ifthen(char *arg){
-	int pos = 0;
-	while(strncmp(arg+pos,"THEN",4) != 0) {
-		pos++;
+	int pos_then = 0;
+	int pos_else;
+	while(strncmp(arg+pos_then,"THEN ",5) != 0) {
+		pos_then++;
 		// Found EOF without "THEN".
-		if(arg[pos] == '\0') {
+		if(arg[pos_then] == '\0') {
 			error = SYNTAXERROR;
 			return;
 		}
 	}
-	arg[pos] = '\0';
+	pos_else = pos_then;
+	while(strncmp(arg+pos_else,"ELSE ",5) != 0){
+		pos_else++;
+		if(arg[pos_else] == '\0') return;
+	}
+	// Separate strings for processing
+	arg[pos_else] = '\0';
+	pos_else += 5;
+	arg[pos_then] = '\0';
 	if(evaluate(arg)){
 		// size of '\0' + "then"
-		pos += 5; 
+		pos_then += 5; 
 		//printf("eval: %s, run:(%s)\n",arg, arg + pos);
-		exec_line(arg+pos);
-	}	
+		exec_line(arg+pos_then);
+	}else{
+		exec_line(arg+pos_else);
+	}
 	return;
 }
 
@@ -274,7 +282,7 @@ void for_next(char *arg){
 		
 		error = 0;	
 	}
-	printf("****fim do laço do for\n");
+	//printf("****fim do laço do for\n");
 	// Need clear error cuz 'while' stoped in a NEXTERROR error.
 	error = 0;
 	// While not end of program	
@@ -286,7 +294,7 @@ void for_next(char *arg){
 		// exec_ptr to right after the "next" statement
 		exec_ptr++;
 		if(next_var == var || next_var == 0) {
-			printf("Ending for %s in line %d\n",arg,program_mem[exec_ptr].line_number);
+			//printf("Ending for %s in line %d\n",arg,program_mem[exec_ptr].line_number);
 			error = 0;
 			return;	
 		}
@@ -297,7 +305,6 @@ void for_next(char *arg){
 	return;
 
 }
-// TODO add tratamento de var para retornar para o for correto
 void next(char *arg){
 	//printf("next(%s)\n %d %d",arg,arg[0],arg[1]);
 	error = NEXTERROR;

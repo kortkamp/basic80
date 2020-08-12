@@ -8,7 +8,7 @@
 #include "program.h"
 #include "command.h"
 #include "var.h"
-
+#include "file.h"
 
 //TODO load a file .bas
 int main(int argc, char *argv[]){
@@ -22,7 +22,11 @@ int main(int argc, char *argv[]){
 	printf("%d bytes free\n", MEM_SIZE);
 	printf("OK\n");
 	
-	if(argc > 1) load(argv[1]);
+	if(argc > 1) {
+		load(argv[1]);
+		run();
+	}
+	
 	if(error == FILEERROR)
 		printf("%s\n",error_msg[FILEERROR]);
 
@@ -32,7 +36,7 @@ int main(int argc, char *argv[]){
 		// Read input from user.
 		scanf(" %80[^\n]s", cbuffer); 
 		// Convert all to UpperCase
-		for(int i = 0 ; i < strlen(cbuffer);i++)
+		for(size_t i = 0 ; i < strlen(cbuffer);i++)
 			if(cbuffer[i] >= 'a' && cbuffer[i] <= 'z')
 				cbuffer[i] += 'A' - 'a';
 		//printf("%s\n",cbuffer);
