@@ -6,8 +6,8 @@
 #include "error.h"
 #include "var.h"	
 
-long operate(long, long, char);
-long  eval(char*, int);
-long evaluate(char*);
+float operate(float, float, char);
+float  eval(char*, int);
+float evaluate(char*);
 
 #endif

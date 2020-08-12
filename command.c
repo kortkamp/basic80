@@ -10,7 +10,7 @@ int set_break;
 
 // Pointer to var passed to next.
 // If not passed var, return NULL
-long *next_var;
+float *next_var;
 
 // Array with name and pointer to functions.
 struct commands command_list[COMMAND_NUM] = {
@@ -40,7 +40,7 @@ void print(char *arg){
 	int arg_pos = 0;
 	int buff_pos = 0;
 	char buff[255]; 
-	long value;
+	float value;
 
 	while(arg[arg_pos] != '\0' ){
 		switch(arg[arg_pos]){
@@ -53,7 +53,7 @@ void print(char *arg){
 					// the expression
 					buff[buff_pos] = '\0';
 					value = evaluate(buff);
-					printf(" %ld ",value);
+					printf(" %g ",value);
 					buff_pos = 0;
 				}
 				// If inside " , then print text
@@ -87,7 +87,7 @@ void print(char *arg){
 		// the expression
 		buff[buff_pos] = '\0';
 		value = evaluate(buff);
-		printf(" %ld",value);
+		printf(" %g",value);
 		buff_pos = 0;
 	}
 	if(arg[strlen(arg)-1] != ';') printf("\n");
@@ -173,7 +173,7 @@ void ifthen(char *arg){
 	arg[pos_else] = '\0';
 	pos_else += 5;
 	arg[pos_then] = '\0';
-	if(evaluate(arg)){
+	if(evaluate(arg) != 0){
 		// size of '\0' + "then"
 		pos_then += 5; 
 		//printf("eval: %s, run:(%s)\n",arg, arg + pos);
@@ -205,7 +205,7 @@ void for_next(char *arg){
 	//char arg[] = "for i = 2 to 14 step 1"; printf("%s\n",arg);
 	long limit;
 	long step = 0;
-	long *var;
+	float *var;
 	int pos_to = 0;
 	int pos_step = 0;
 	int after_for_ptr = exec_ptr  ;
@@ -257,7 +257,7 @@ void for_next(char *arg){
 	while((*var)*direction <= limit*direction){
 		//printf("exec_ptr:%d\n",exec_ptr);
 		// must be set to 1 bcuz in last while it could be set to 0; 	
-		next_var = (long *)1;
+		next_var = (float *)1;
 		error = 0;
 		// call the continue untill a error or end of program ocurrs
 		cont();

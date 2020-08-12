@@ -7,12 +7,12 @@
 #include <stdio.h>
 
 // A var must be identified by its first two letters.
-long var[26][26+17];
+float var[26][26+17];
 void clear_vars();
-long get_var(char*);
-long *set_var(char*,long);
+float get_var(char*);
+float *set_var(char*,float);
 int test_attribution(char*);
-long *exec_attribution(char*);
-long *get_var_pointer(char*);
+float *exec_attribution(char*);
+float *get_var_pointer(char*);
 
 #endif

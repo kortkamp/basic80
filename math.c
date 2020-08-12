@@ -7,7 +7,7 @@
 
 //TODO add math function 
 //TODO add >= <= <> in operate
-long operate(long op1, long op2, char op){
+float operate(float op1, float op2, char op){
 //	printf("operate: %ld %c %ld \n",op1, op ,op2);
 	switch(op){
 		case ':':
@@ -23,7 +23,7 @@ long operate(long op1, long op2, char op){
 			return(op1*op2);
 
 		case '%':
-			return(op1%op2);
+			return(0);
 
 		case '/':
 			if(op2 == 0){
@@ -53,7 +53,7 @@ long operate(long op1, long op2, char op){
 }
 // Evaluate Math.
 // tier is the priority of the step in evaluation 0 is the lowest
-long  eval(char *arg, int tier){
+float  eval(char *arg, int tier){
 	
 	char tier_operator[4][4] = {
 		"=><",	// tier 0 operators
@@ -67,8 +67,8 @@ long  eval(char *arg, int tier){
 	char operator = ':';
 	int arg_pos = 0;
 	int exp_pos = 0;
-	long evalued = 0;
-	long value = 0;
+	float evalued = 0;
+	float value = 0;
 	int inside_bracket = 0; // false
 
 	//for(int i = 0 ; i < tier; i++) printf("	"); 	
@@ -94,7 +94,7 @@ long  eval(char *arg, int tier){
 
 		// Is number.
 		if((arg[0] >= '0' && arg[0] <= '9')|| arg[0] == '-' )
-			sscanf(arg,"%ld",&value);
+			sscanf(arg,"%f",&value);
 		else if(arg[0] >= 'A' && arg[0] <= 'Z')  {
 			// Is function ???
 			// code code code
@@ -143,7 +143,7 @@ long  eval(char *arg, int tier){
 	return(value);
 }
 
-long evaluate(char *arg){
+float evaluate(char *arg){
 	//char argt[] = "12*(3^2-456)*78+3+91";	
 	//char argt[] = "2 * (2 + 2 * (1+ 3) ) + 3";	
 	//printf("\navaluated expression %s = %ld \n",argt,eval(argt,0));

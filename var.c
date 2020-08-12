@@ -9,7 +9,7 @@
 // The second char of a var name may be a number
 
 // Return the value of a numeric var.
-long get_var(char *name){
+float get_var(char *name){
 	//printf("name(%s)%d\n",name,name[0]);
 	if(name[1] == '\0')
 		// len of name = 1
@@ -17,7 +17,7 @@ long get_var(char *name){
 	return(var[name[0]-'A'][name[1]-'0']);
 }
 // Set a value for a var;
-long *set_var(char *name, long value){
+float *set_var(char *name, float value){
 	//printf("set_var:%s << %ld",name,value);
 	if(name[1] == '\0'){
 		var[name[0]-'A'][0] = value;
@@ -27,7 +27,7 @@ long *set_var(char *name, long value){
 	//printf("set_var:%ld\n",&var[name[0] - 'A'][name[1]-'0'] );
 	return(&var[name[0] - 'A'][name[1]-'0']);
 }
-long *get_var_pointer(char *name){
+float *get_var_pointer(char *name){
 	//printf("name(%s)%d\n",name,name[0]);
 	if(name[0] == '\0') 
 		return(NULL);
@@ -54,7 +54,7 @@ int test_attribution(char *buffer){
 }
 //TODO verificar se a variável é um string e chamar a função correspondente
 //TODO set Missing operand error 
-long *exec_attribution(char *buffer){
+float *exec_attribution(char *buffer){
 	char var_name[20];
 	int size; // size of string read
 	sscanf(buffer," %[^=] =%n",var_name,&size);
