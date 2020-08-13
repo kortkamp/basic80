@@ -202,16 +202,18 @@ float *get_for_var(char *line){
 	return(get_var_pointer(var));
 }
 
-// Returns the assinment to var in a FOR statment.
+// Returns the assignment to var in a FOR statment.
 float get_for_assignment(char *line){
+
 	char assig_buffer[50];
-	char *position_step = strstr(line,"STEP");
-	char *assignment = strstr(line,"=");
+	strcpy(assig_buffer,line);
+	char *position_step = strstr(assig_buffer,"STEP");
+	char *assignment = strstr(assig_buffer,"=");
 	assignment += 1;	
-	strcpy(assig_buffer,assignment);
 	if(position_step != NULL)
 		position_step[0] = '\0';
-	return(evaluate(assig_buffer));
+
+	return(evaluate(assignment));
 }
 
 // Returns the limit assigned in a FOR statement.
@@ -228,12 +230,14 @@ float get_for_limit(char *line){
 	position_step = strstr(limit_assignment,"STEP");	
 	if(position_step != NULL)
 		position_step[0] = '\0';
+
 	return(evaluate(limit_assignment));
 }
 
 // Returns the value of STEP specified in FOR statement.
 // If not specified returns 1.
 float get_for_step(char *line){
+
 	char *step = strstr(line,"STEP");
 	if(step == NULL){
 		// Step não especificado.
@@ -253,8 +257,6 @@ void for_to(char *arg){
 	// except attributin the value to the var.
 	int pos_to = 0;
 	float *var = get_for_var(get_line(exec_ptr));
-	//printf("step %f\n",get_for_step(arg));
-	//printf("VAR value=%f, assig= %f , step value=%f limit=%f\n", *var, get_for_assignment(arg), get_for_step(arg),get_for_limit(arg));
 
 	while(strncmp(arg+pos_to,"TO ",3) != 0) {
 		pos_to++;
@@ -273,38 +275,55 @@ void for_to(char *arg){
 
 	return;
 }
+// Tests a FOR loop. 
+int test_for(char *line){
+
+	// Indicates if a FOR statement goes forward or backward.
+	float direction = 1;
+	float *var = get_for_var(line);
 
 
+	if(get_for_step(line) < 0) 
+		direction = -1;	
+
+	if(*var*direction > get_for_limit(line)*direction){
+
+		return(FALSE);
+	}
+
+	return(TRUE);
+
+}
 // next should walk back each line and find its correspondent NEXT statement,
 // test and do its work.
 void next(char *arg){
+	// ptr_next : ptr to current NEXT
 	int ptr_next = exec_ptr;
+	// Ptr for search.
+	int search_ptr = exec_ptr;
+	// var passed in arg of NEXT
 	float *var = get_var_pointer(arg);
 	// Go back and find the respective FOR.
-	while(exec_ptr >= 0){
-		if(get_for_var(get_line(exec_ptr)) != NULL){
+	while(search_ptr >= 0){
+		if(get_for_var(get_line(search_ptr)) != NULL){
 			// Found a FOR
 			// Test if var in NEXT and FOR corresponds
-			if(var == NULL || var == get_for_var(get_line(exec_ptr))){
-				printf("var found\n");	
+			if(var == NULL || var == get_for_var(get_line(search_ptr))){
 				// Found our FOR
 				// Assign var in case we have a var == NULL.
-				var = get_for_var(get_line(exec_ptr));
+				var = get_for_var(get_line(search_ptr));
 				//make the test for limits
-				*var += get_for_step(get_line(exec_ptr));
+				*var += get_for_step(get_line(search_ptr));
 
-				não esta executando
-				if(*var > get_for_limit(get_line(exec_ptr)))
-					exec_ptr = ptr_next;
-				// back
+				if(test_for(get_line(search_ptr))){
+					exec_ptr = search_ptr;
+				}
 				
-				// Here we are on FOR or NEXT , in both cases we must add 1 to exec_ptr.
-				exec_ptr++;
 				return;
 			}
 		}
 	
-		exec_ptr--;
+		search_ptr--;
 	}	
 	error = NEXTERROR;
 	return;
