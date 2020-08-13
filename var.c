@@ -2,36 +2,29 @@
 
 
 //TODO adicionar variáveis string
-//TODO trabalhar com floats
 //TODO add Missing Operand error
 
 
-// The second char of a var name may be a number
 
 // Return the value of a numeric var.
 float get_var(char *name){
-	//printf("name(%s)%d\n",name,name[0]);
-	if(name[1] == '\0')
-		// len of name = 1
+	if(name[1] == '\0' || name[1] == ' ')
 		return(var[name[0]-'A'][0]);
 	return(var[name[0]-'A'][name[1]-'0']);
 }
 // Set a value for a var;
 float *set_var(char *name, float value){
-	//printf("set_var:%s << %ld",name,value);
-	if(name[1] == '\0'){
+	if(name[1] == '\0' || name[1] == ' '){
 		var[name[0]-'A'][0] = value;
 		return(&var[name[0]-'A'][0]);
 	}
 	var[name[0] - 'A'][name[1]-'0'] = value;
-	//printf("set_var:%ld\n",&var[name[0] - 'A'][name[1]-'0'] );
 	return(&var[name[0] - 'A'][name[1]-'0']);
 }
 float *get_var_pointer(char *name){
-	//printf("name(%s)%d\n",name,name[0]);
 	if(name[0] == '\0') 
 		return(NULL);
-	if(name[1] == '\0'){
+	if(name[1] == '\0' || name[1] == ' '){
 		return(&var[name[0]-'A'][0]);
 	}
 	return(&var[name[0] - 'A'][name[1]-'0']);
@@ -59,9 +52,6 @@ float *exec_attribution(char *buffer){
 	int size; // size of string read
 	sscanf(buffer," %[^=] =%n",var_name,&size);
 	if(var_name[1] == ' ') var_name[1] = '\0'; 
-//	printf("|%s|	new var (%s)= %d, left:'%s',%ld\n",buffer,var_name,size,buffer+size,evaluate(buffer+size));
-	
-//	printf("%ld",set_var(var_name,evaluate(buffer+size)));
 	return(set_var(var_name,evaluate(buffer+size)));
 
 }

@@ -14,7 +14,7 @@ void load(char *filename){
 		return;
 	}
 	// Clean Program space.
-	new();
+	new_program();
 
 	while(fscanf(fp,"%[^\n]\n",linebuffer) != EOF){
 		//printf("%s\n",linebuffer);
