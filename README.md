@@ -1,4 +1,4 @@
-# basic80
+# Basic80
  Basic interpreter compatible with 8 bit terminal computers.
 
  This project is being developed with learning purposes in clean room mode. I'm not examining other Basic interpreters ou original x80 Basic version. The objective here is to develop a fully compatible interpreter using only observation of classic Basics versions.
@@ -22,5 +22,7 @@
 
  If you find some bug in the already implemented function and Basic commmands, please report.
 
+# Author
 
+ [Marcelo Kortkamp] (https://github.com/kortkamp/)
 
