@@ -14,14 +14,15 @@
 	
 1. You may run `make run` or, after compilation, run `./basic` .
 
-1. Basic files can be load by using argument when calling the program like: `./basic mandelbrot.bas` .
+1. Basic files can be loaded by using argument when calling the program like: `./basic mandelbrot.bas` .
 
 1. Basic files can be loaded by using `LOAD` statement , but currently only uppercase named files in this form.
 
 # Reporting bugs
 
- If you find some bug in the already implemented function and Basic commmands, please report.
+ If you find some bug in the already implemented functions and Basic commmands, please report.
 
+ 
 # Author
 
  [Marcelo Kortkamp](https://github.com/kortkamp/)
