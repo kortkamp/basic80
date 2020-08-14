@@ -24,5 +24,5 @@
 
 # Author
 
- [Marcelo Kortkamp] (https://github.com/kortkamp/)
+ [Marcelo Kortkamp](https://github.com/kortkamp/)
 
