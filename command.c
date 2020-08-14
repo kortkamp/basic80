@@ -38,7 +38,7 @@ void print(char *arg){
 	int buff_pos = 0;
 	char buff[255]; 
 	float value;
-
+	char *chr_pos;
 	while(arg[arg_pos] != '\0' ){
 		switch(arg[arg_pos]){
 			case '"':
@@ -83,9 +83,17 @@ void print(char *arg){
 		// of a string, so print evaluation of
 		// the expression
 		buff[buff_pos] = '\0';
-		value = evaluate(buff);
-		printf(" %g",value);
-		buff_pos = 0;
+		
+		chr_pos = strstr(buff,"CHR$");
+		if(chr_pos != NULL){
+			chr_pos += 4;
+			int value = 0 + evaluate(chr_pos);
+			printf("%c",value);
+		}else {
+			value = evaluate(buff);
+			printf(" %g",value);
+			buff_pos = 0;
+		}
 	}
 	if(arg[strlen(arg)-1] != ';') printf("\n");
 	return;
@@ -250,14 +258,13 @@ float get_for_step(char *line){
 	return(evaluate(step));
 }
 
-// Just execute the attribution in FOR TO line
+// Just execute the attribution in FOR_TO line
 void for_to(char *arg){
 	
 	// In our aproach , the for statement does nothing
 	// except attributin the value to the var.
 	int pos_to = 0;
-	float *var = get_for_var(get_line(exec_ptr));
-
+	
 	while(strncmp(arg+pos_to,"TO ",3) != 0) {
 		pos_to++;
 		// Found EOF without "TO".
@@ -268,7 +275,7 @@ void for_to(char *arg){
 	}
 	arg[pos_to] = '\0';
 	if(test_attribution(arg)){
-		var = exec_attribution(arg);
+		exec_attribution(arg);
 	}else{
 		error = SYNTAXERROR;
 	}
@@ -297,9 +304,7 @@ int test_for(char *line){
 // next should walk back each line and find its correspondent NEXT statement,
 // test and do its work.
 void next(char *arg){
-	// ptr_next : ptr to current NEXT
-	int ptr_next = exec_ptr;
-	// Ptr for search.
+	// pointer for search.
 	int search_ptr = exec_ptr;
 	// var passed in arg of NEXT
 	float *var = get_var_pointer(arg);
