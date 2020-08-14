@@ -8,13 +8,13 @@
 
 // Return the value of a numeric var.
 float get_var(char *name){
-	if(name[1] == '\0' || name[1] == ' ')
+	if(name[1] == '\0' || name[1] == ' ' || name[1] == '=')
 		return(var[name[0]-'A'][0]);
 	return(var[name[0]-'A'][name[1]-'0']);
 }
 // Set a value for a var;
 float *set_var(char *name, float value){
-	if(name[1] == '\0' || name[1] == ' '){
+	if(name[1] == '\0' || name[1] == ' ' || name[1] == '='){
 		var[name[0]-'A'][0] = value;
 		return(&var[name[0]-'A'][0]);
 	}
@@ -24,7 +24,7 @@ float *set_var(char *name, float value){
 float *get_var_pointer(char *name){
 	if(name[0] == '\0') 
 		return(NULL);
-	if(name[1] == '\0' || name[1] == ' '){
+	if(name[1] == '\0' || name[1] == ' ' || name[1] == '='){
 		return(&var[name[0]-'A'][0]);
 	}
 	return(&var[name[0] - 'A'][name[1]-'0']);

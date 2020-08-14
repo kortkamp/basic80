@@ -8,7 +8,10 @@
 void  goto_line(char *line_number_str){
 	int line_number = 0;
 	sscanf(line_number_str,"%d",&line_number);
-	exec_ptr = get_index(line_number) ;
+	// we need to decrement by 1 becouse
+	// run() function adds 1 right after execution
+	// of the instruction
+	exec_ptr = get_index(line_number) - 1 ;
 	
 //	printf("line:%d index:%d\n",line_number,get_index(line_number));
 }

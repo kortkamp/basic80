@@ -33,12 +33,12 @@ struct commands command_list[COMMAND_NUM] = {
 
 
 void print(char *arg){
-	
 	int arg_pos = 0;
 	int buff_pos = 0;
 	char buff[255]; 
 	float value;
 	char *chr_pos;
+	int last_char;
 	while(arg[arg_pos] != '\0' ){
 		switch(arg[arg_pos]){
 			case '"':
@@ -95,7 +95,11 @@ void print(char *arg){
 			buff_pos = 0;
 		}
 	}
-	if(arg[strlen(arg)-1] != ';') printf("\n");
+	last_char = strlen(arg)-1;
+	while(arg[last_char] == ' '){
+		last_char--;
+	}
+	if(arg[last_char] != ';') printf("\n");
 	return;
 }
 
@@ -159,7 +163,7 @@ void list_program(char *arg){
 	for(int i = get_index(start) ; i < program_ptr ; i ++)
 		printf("%d %s\n", program_mem[i].line_number,program_mem[i].line);
 }
-// TODO substituir rotinas de busca por sscanf
+// TODO substituir rotinas de busca por strstr()
 void ifthen(char *arg){
 	int pos_then = 0;
 	int pos_else;
@@ -174,16 +178,14 @@ void ifthen(char *arg){
 	pos_else = pos_then;
 	while(strncmp(arg+pos_else,"ELSE ",5) != 0){
 		pos_else++;
-		if(arg[pos_else] == '\0') return;
+		if(arg[pos_else] == '\0') break;
 	}
 	// Separate strings for processing
 	arg[pos_else] = '\0';
 	pos_else += 5;
 	arg[pos_then] = '\0';
 	if(evaluate(arg) != 0){
-		// size of '\0' + "then"
 		pos_then += 5; 
-		//printf("eval: %s, run:(%s)\n",arg, arg + pos);
 		exec_line(arg+pos_then);
 	}else{
 		exec_line(arg+pos_else);
@@ -220,7 +222,6 @@ float get_for_assignment(char *line){
 	assignment += 1;	
 	if(position_step != NULL)
 		position_step[0] = '\0';
-
 	return(evaluate(assignment));
 }
 
@@ -260,7 +261,6 @@ float get_for_step(char *line){
 
 // Just execute the attribution in FOR_TO line
 void for_to(char *arg){
-	
 	// In our aproach , the for statement does nothing
 	// except attributin the value to the var.
 	int pos_to = 0;
@@ -279,9 +279,9 @@ void for_to(char *arg){
 	}else{
 		error = SYNTAXERROR;
 	}
-
 	return;
 }
+
 // Tests a FOR loop. 
 int test_for(char *line){
 
@@ -289,18 +289,14 @@ int test_for(char *line){
 	float direction = 1;
 	float *var = get_for_var(line);
 
-
 	if(get_for_step(line) < 0) 
 		direction = -1;	
-
 	if(*var*direction > get_for_limit(line)*direction){
-
 		return(FALSE);
 	}
-
 	return(TRUE);
-
 }
+
 // next should walk back each line and find its correspondent NEXT statement,
 // test and do its work.
 void next(char *arg){
@@ -327,10 +323,8 @@ void next(char *arg){
 				return;
 			}
 		}
-	
 		search_ptr--;
 	}	
 	error = NEXTERROR;
 	return;
-
 }
