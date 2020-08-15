@@ -15,7 +15,27 @@ int main(int argc, char *argv[]){
 	exec_ptr = 0;
 	program_ptr = 0; 
 	clear_vars();
-	
+/*
+// test string vars
+	set_str_var("nome$","Marcelo Teixeira Campos");
+	set_str_var("city$","Aperibe");
+	set_str_var("idade$","37");
+
+	print_str_var("nome$");
+	printf("\n");
+	print_str_var("city$");
+	printf("\n");
+	print_str_var("idade$");
+	printf("\n");
+
+	for(int i = 0 ; i < 100; i++){
+	//	if(string_space[i] == 0) printf("\\0");
+	//	printf("%c",string_space[i]);
+	}
+	return(0);
+// end test
+*/
+
 	// Will store the input commands that do not have line specification.
 	char cbuffer[MAX_INPUT_LENGHT] = {0}; 
 	printf("Basic80 Interpreter\n");

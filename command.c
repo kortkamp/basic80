@@ -79,7 +79,7 @@ void print(char *arg){
 	}
 			
 	if(buff_pos > 0){
-		// we have a expression before start 
+		// we have a expression after end 
 		// of a string, so print evaluation of
 		// the expression
 		buff[buff_pos] = '\0';
@@ -299,6 +299,7 @@ int test_for(char *line){
 
 // next should walk back each line and find its correspondent NEXT statement,
 // test and do its work.
+// TODO processo a FOR NEXT in the same line.
 void next(char *arg){
 	// pointer for search.
 	int search_ptr = exec_ptr;
