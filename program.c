@@ -22,7 +22,7 @@ int find_line(int number){
 	}
 	return(-1);
 }
-// Execute a simgle command.
+// Execute a single command.
 int exec_single(char *line){
 	//printf("exec_single:(%s)\n",line);
 	char command[10];
@@ -110,34 +110,97 @@ char *get_line(int index){
 	return(program_mem[index].line);
 }
 
-// Enter a line into program memory.
-int enter_line(char *line_str){
-	int line_number;
-	char line[80];
-	int line_index; // Index in program_mem
-	int num_args = sscanf(line_str," %d %[^\n]\n",&line_number,line);
-	line_index = find_line(line_number);
-	
-	// Empty line string.
-	if(num_args < 2){
-	       	drop_line(line_index); 
-		return(0);
-	}
-	// Line exists, substitute!
-	if(line_index != -1) {
-		put_line(line_index,line_number,line);
-		return(0);
-	}
-	
-	// The entered line is the next in order
-	if(line_number > program_mem[program_ptr -1].line_number){
-		put_line(program_ptr,line_number,line);
-		program_ptr++;
-		return(0);
-	}
+// Return a pointer to start of next line.
+// If end of program_space found return NULL.
+char *get_next_line(){
+	while(prog_exec < PROGRAM_SIZE)
+		if(program_space[prog_exec++] == LINE_SEPARATOR)
+			return(program_space + prog_exec);
+	return(NULL);
 
-	// Entered line is between previous line,
-	// make space for new line.
-	expand_lines(line_number,line);
+}
+// Return a pointer to start of previous line.
+// If start of program_space found return NULL.
+char *get_prev_line(){
+	prog_exec -= 2;	
+	while(prog_exec >= 0)
+		if(program_space[prog_exec--] == LINE_SEPARATOR){
+			prog_exec += 2;
+			return(program_space + prog_exec);
+		}
+	return(NULL);
+}
+
+// Returns the line number of a string.
+int get_line_number(char *line){
+	int number = 0;
+	if(line == NULL)
+		return(0);	
+	sscanf(line, " %d",&number);
+	return(number);
+}	
+
+// Expand a position in program_space to open space for a new line
+int expand(long position, long count){
+
+
+}
+// List all entries in program_space.
+void list(){
+
+
+
+
+}
+// Clear all positions in program_space.
+void program_space_clear(){
+	memset(program_space, 0,PROGRAM_SIZE);
+}
+// Enter a line into program memory.
+int enter_line(char *line){
+	int line_number = get_line_number(line);;
+	int search_number = 0;
+	int size = strlen(line);
+	int line_pos = 0;
+	char *search;
+	search = strchr(program_space, LINE_INIT);
+	while(search != NULL){
+		search++;
+		search_number = get_line_number(search);
+		printf("number = %d\n",search_number);
+		if(search_number > line_number){
+
+
+		}
+
+		search = strchr(search, LINE_INIT);
+	}
+	expand(prog_exec,size + 2);
+	
+	program_space[prog_exec++] = LINE_INIT;
+
+	// Add separator.
+	while(line[line_pos] != ' '){
+		line_pos++;
+	}	
+	line[line_pos] == CMD_SEPARATOR;
+	
+	for(int i = 0; i <= size; i++){
+		// Add separator.
+		if(line[i] == ':') 
+			line[i] = CMD_SEPARATOR;
+		
+		program_space[prog_exec++] = line[i];
+	}	
+
 	return(0);
+}
+
+void test_program(){
+	program_space_clear();
+	printf("TEST NEW PROGRAM STRUCTURE\n");
+	enter_line("10 PRINT 10");
+	enter_line("20 PRINT 20");
+	enter_line("30 PRINT 30");
+	
 }

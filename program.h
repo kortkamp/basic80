@@ -5,6 +5,25 @@
 #include "basic.h"
 #include "command.h"
 
+#define CMD_SEPARATOR	0x80
+#define LINE_SEPARATOR	0x81
+#define LINE_INIT	0x81
+
+#define PROGRAM_SIZE 20000
+
+
+// Array used to store the program.
+char program_space[PROGRAM_SIZE];
+
+// Position to store next line.
+long prog_store;
+
+// Search position in program_space.
+long prog_search;
+
+// Position to exectute line or search line.
+long prog_exec;
+
 struct program{
 	int line_number;
 	char line[80];
@@ -30,5 +49,6 @@ int expand_lines(int ,char*);
 int get_index(int );
 char *get_line(int );
 int enter_line(char*);
+void test_program();
 
 #endif

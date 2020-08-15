@@ -15,6 +15,10 @@ int main(int argc, char *argv[]){
 	exec_ptr = 0;
 	program_ptr = 0; 
 	clear_vars();
+
+
+	test_program();
+	return(0);
 /*
 // test string vars
 	set_str_var("nome$","Marcelo Teixeira Campos");
