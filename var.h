@@ -9,14 +9,6 @@
 
 #define STRING_SPACE_SIZE 10000
 
-// Array used to store all string vars.
-char string_space[STRING_SPACE_SIZE];
-long string_space_pos;
-
-
-// A var must be identified by its first two letters.
-float var[26][26+17];
-char *str_var[26][26+17];
 void clear_vars();
 float get_var(char*);
 float *set_var(char*,float);

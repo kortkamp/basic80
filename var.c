@@ -1,5 +1,13 @@
 #include "var.h"
 
+// Array used to store all string vars.
+char string_space[STRING_SPACE_SIZE];
+long string_space_pos;
+
+// A var must be identified by its first two letters.
+float var[26][26+17];
+char *str_var[26][26+17];
+
 
 //TODO adicionar variáveis string
 //TODO add Missing Operand error
