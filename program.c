@@ -9,6 +9,15 @@ extern int error;
 /* From command.c. */
 extern struct commands command_list[COMMAND_NUM];
 
+
+struct program program_mem[MAX_LINES];
+
+// Pointer to next free line space.
+int program_ptr;
+
+// Pointer do next line to be executed.
+int exec_ptr;
+
 void  goto_line(char *line_number_str){
 	int line_number = 0;
 	sscanf(line_number_str,"%d",&line_number);

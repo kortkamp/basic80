@@ -15,6 +15,11 @@ extern int error_line;
 /* From var.c. */
 extern float var[26][26+17];
 
+/* From program.c. */
+extern int exec_ptr;
+extern int program_ptr;
+extern struct program program_mem[MAX_LINES];
+
 
 struct commands command_list[COMMAND_NUM];
 

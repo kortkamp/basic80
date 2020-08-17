@@ -9,14 +9,6 @@ struct program{
 	int line_number;
 	char line[80];
 };
-struct program program_mem[MAX_LINES];
-
-
-// Pointer to next free line space.
-int program_ptr; 
-
-// Pointer do next line to be executed.
-int exec_ptr;
 
 void  goto_line(char*);
 int find_line(int);

@@ -15,6 +15,10 @@ extern int error;
 extern int error_line;
 extern char error_msg[6][30];
 
+/* From program.c. */
+extern int exec_ptr;
+extern int program_ptr;
+
 //TODO load a file .bas
 int main(int argc, char *argv[]){
 	exec_ptr = 0;
