@@ -11,8 +11,6 @@ struct commands{
 	void (*function)(char*);
 };
 
-struct commands command_list[COMMAND_NUM]; 
-
 void print(char*);
 void system_exit();
 void run();

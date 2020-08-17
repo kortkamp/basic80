@@ -6,6 +6,9 @@
 /* From error.c. */
 extern int error;
 
+/* From command.c. */
+extern struct commands command_list[COMMAND_NUM];
+
 void  goto_line(char *line_number_str){
 	int line_number = 0;
 	sscanf(line_number_str,"%d",&line_number);

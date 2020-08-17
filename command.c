@@ -15,6 +15,9 @@ extern int error_line;
 /* From var.c. */
 extern float var[26][26+17];
 
+
+struct commands command_list[COMMAND_NUM];
+
 // Array with name and pointer to functions.
 struct commands command_list[COMMAND_NUM] = {
 	{"PRINT",&print},
