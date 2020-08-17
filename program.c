@@ -3,7 +3,8 @@
 #include <string.h>
 #include "program.h"
 
-
+/* From error.c. */
+extern int error;
 
 void  goto_line(char *line_number_str){
 	int line_number = 0;

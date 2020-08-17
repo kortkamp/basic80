@@ -8,6 +8,9 @@
 
 int set_break;
 
+/* From error.c. */
+extern int error;
+extern int error_line;
 
 // Array with name and pointer to functions.
 struct commands command_list[COMMAND_NUM] = {

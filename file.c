@@ -1,6 +1,7 @@
 #include "file.h"
 
-
+/* From error.c. */
+extern int error;
 
 void load(char *filename){
 

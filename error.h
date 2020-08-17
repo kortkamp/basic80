@@ -7,13 +7,4 @@
 	#define SYNTAXERROR	3
 	#define NEXTERROR	4
 	#define FILEERROR	5
-	
-	// Global error vars.
-	
-	// Error code.
-	int error;
-	// Line in which error ocurred.
-	int error_line;	
-	// Error message.
-	char  error_msg[6][30];
 #endif

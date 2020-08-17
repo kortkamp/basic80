@@ -10,6 +10,11 @@
 #include "var.h"
 #include "file.h"
 
+/* From error.c. */
+extern int error;
+extern int error_line;
+extern char error_msg[6][30];
+
 //TODO load a file .bas
 int main(int argc, char *argv[]){
 	exec_ptr = 0;

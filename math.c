@@ -4,6 +4,8 @@
 #include "basic.h"
 #include <string.h>
 
+/* From error.c. */
+extern int error;
 
 //TODO add math function 
 //TODO add >= <= <> in operate
