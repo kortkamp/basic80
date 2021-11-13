@@ -3,7 +3,7 @@
 all: basic
  
  basic: main.o math.o program.o command.o var.o error.o file.o
-	gcc -lm -o basic main.o math.o program.o command.o var.o error.o file.o
+	gcc -o basic main.o math.o program.o command.o var.o error.o file.o -lm
  
 main.o: main.c
 	gcc -o main.o main.c -lm -c -W -Wall -pedantic
